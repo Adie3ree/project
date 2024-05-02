@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stock Prices and Sentiment Analysis - Mountain Chart</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<div style="width:600px; height:400px;">
+  <canvas id="teslaStockChart"></canvas>
+</div>
+
+<div style="width:600px; height:400px;">
+  <canvas id="teslaSentimentChart"></canvas>
+</div>
+
+<script>
+  const ctxTesla = document.getElementById('teslaStockChart').getContext('2d');
+  const teslaStockChart = new Chart(ctxTesla, {
+    type: 'line',
+    data: {
+      labels: ['Apr 20', 'Apr 21', 'Apr 22', 'Apr 23', 'Apr 24', 'Apr 25', 'Apr 26', 'Apr 27', 'Apr 28', 'Apr 29'],
+      datasets: [{
+        label: 'Tesla Stock Price',
+        data: [193.76, 191.97, 199.40, 199.73, 202.04, 201.88, 202.64, 188.14, 180.74, 185.94],
+        fill: true,
+        backgroundColor: 'rgba(255, 0, 0, 0.5)', // red
+        borderColor: 'rgb(255, 0, 0)', // red
+        tension: 0.4
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: false
+        }
+      }
+    }
+  });
+
+  const ctxSentiment = document.getElementById('teslaSentimentChart').getContext('2d');
+  const teslaSentimentChart = new Chart(ctxSentiment, {
+    type: 'bar',
+    data: {
+      labels: ['Apr 20', 'Apr 21', 'Apr 22', 'Apr 23', 'Apr 24', 'Apr 25', 'Apr 26', 'Apr 27', 'Apr 28', 'Apr 29'],
+      datasets: [{
+        label: 'Tesla News Sentiment',
+        data: [0.1, -0.2, 0.3, -0.1, 0.2, 0.1, -0.3, 0.2, -0.1, 0.2], 
+        fill: true,
+        backgroundColor: function(context) {
+          var index = context.dataIndex;
+          var value = context.dataset.data[index];
+          return value < 0 ? 'rgba(255, 99, 132, 0.5)' :  // color for negative sentiment
+                           'rgba(75, 192, 192, 0.5)';     // color for positive sentiment
+        },
+        borderColor: function(context) {
+          var index = context.dataIndex;
+          var value = context.dataset.data[index];
+          return value < 0 ? 'rgb(255, 99, 132)' :  // color for negative sentiment
+                           'rgb(75, 192, 192)';     // color for positive sentiment
+        },
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          min: -1,
+          max: 1
+        }
+      }
+    }
+  });
+</script>
+
+</body>
+</html>
